@@ -1,7 +1,9 @@
 ﻿# Permissions
+
 * `enderpearl.use` -- Allows player to use ender pearls.
 
 # Configuration
+
 The configuration is pretty simple and easy to figure out. 
 <hr>
 First option `Enabled` is to enable or disable the plugin.
