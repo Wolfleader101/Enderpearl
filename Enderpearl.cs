@@ -5,13 +5,14 @@ using UnityEngine;
 
 namespace Oxide.Plugins
 {
-	[Info("Enderpearl", "Wolfleader101", "0.2.0")]
+	[Info("Enderpearl", "Wolfleader101", "0.3.0")]
 	[Description("Throw an ender pearl and teleport to its location")]
 	class Enderpearl : RustPlugin
 	{
 		#region Variables
 		
 		private PluginConfig config;
+		public const string enderPearlPerms = "enderpearl.use";
 
 		#endregion
 
@@ -20,24 +21,24 @@ namespace Oxide.Plugins
 		{
 			config = Config.ReadObject<PluginConfig>();
 
-			permission.RegisterPermission("enderpearl.use", this);
+			permission.RegisterPermission(enderPearlPerms, this);
 		}
 
 		void OnPlayerAttack(BasePlayer attacker, HitInfo info)
 		{
-			if (permission.UserHasPermission(attacker.UserIDString, "enderpearl.use"))
+			if (permission.UserHasPermission(attacker.UserIDString, enderPearlPerms))
 			{
-				
+				if (info == null) return;
 				if (info.IsProjectile())
 				{
 					string EntName = info.ProjectilePrefab.name;
 					string projectileName = config.enderpearl + ".projectile";
 
-					if (EntName == projectileName && config.enabled)
+					if (EntName == projectileName)
 					{
 						Teleport(attacker, info);
 					}
-					else if (EntName == config.enderpearl)
+					else if (EntName == config.enderpearl) // some things like ammo are riflebullet and dont contain a .projectile
 					{
 						Teleport(attacker, info);
 					}
@@ -66,8 +67,6 @@ namespace Oxide.Plugins
 			[JsonProperty("Enderpearl")]
 			public string enderpearl { get; set; }
 
-			[JsonProperty("Enabled")]
-			public bool enabled { get; set; }
 
 		}
 
@@ -75,8 +74,7 @@ namespace Oxide.Plugins
 		{
 			return new PluginConfig
 			{
-				enderpearl = "snowball",
-				enabled = true
+				enderpearl = "snowball"
 			};
 		}
 
