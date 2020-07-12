@@ -6,18 +6,14 @@
 
 The configuration is pretty simple and easy to figure out. 
 <hr>
-First option `Enabled` is to enable or disable the plugin.
+`Enderpearl` is the item you want to set as the ender pearl.
+**This is the weapons name and not the projectile E.G `ak47u.entity`**
 <br>
-Second option `Enderpearl` is the item you want to set as the ender pearl.
-**This is either the items shortname or ProjectilePrefab**
-Some items such as 5.56 are prefab names and should be set it `riflebullet` <br>
-For a list of item short names go to this [Item List](https://www.corrosionhour.com/rust-item-list/]). <br>
-I will make a list of Projectile Prefab names for other items, in the mean time feel free to DM me on discord `WOLFLEADER#0999` if you would like a specific item 😉
+I will make a list of weapon names for other items, in the mean time feel free to DM me on discord `WOLFLEADER#0999` if you would like a specific item 😉
 
 
 ```
 {
-  "Enabled": true,
-  "Enderpearl": "snowball"
+  "Enderpearl": "snowball.entity"
 }
 ```

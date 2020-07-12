@@ -5,84 +5,74 @@ using UnityEngine;
 
 namespace Oxide.Plugins
 {
-	[Info("Enderpearl", "Wolfleader101", "0.3.1")]
-	[Description("Throw an ender pearl and teleport to its location")]
-	class Enderpearl : RustPlugin
-	{
-		#region Variables
-		
-		private PluginConfig config;
-		public const string enderPearlPerms = "enderpearl.use";
+    [Info("Enderpearl", "Wolfleader101", "0.4.0")]
+    [Description("Throw an ender pearl and teleport to its location")]
+    class Enderpearl : RustPlugin
+    {
+        #region Variables
 
-		#endregion
+        private PluginConfig config;
+        public const string enderPearlPerms = "enderpearl.use";
 
-		#region Hooks
-		private void Init()
-		{
-			config = Config.ReadObject<PluginConfig>();
+        #endregion
 
-			permission.RegisterPermission(enderPearlPerms, this);
-		}
+        #region Hooks
 
-		void OnPlayerAttack(BasePlayer attacker, HitInfo info)
-		{
-			if (info == null) return;
+        private void Init()
+        {
+            config = Config.ReadObject<PluginConfig>();
 
-			if (permission.UserHasPermission(attacker.UserIDString, enderPearlPerms))
-			{
-				if (info.IsProjectile())
-				{
-					string EntName = info.ProjectilePrefab.name;
-					string projectileName = config.enderpearl + ".projectile";
+            permission.RegisterPermission(enderPearlPerms, this);
+        }
 
-					if (EntName == projectileName)
-					{
-						Teleport(attacker, info);
-					}
-					else if (EntName == config.enderpearl) // some things like ammo are riflebullet and dont contain a .projectile
-					{
-						Teleport(attacker, info);
-					}
+        void OnPlayerAttack(BasePlayer attacker, HitInfo info)
+        {
+            if (info == null) return;
+            if (!permission.UserHasPermission(attacker.UserIDString, enderPearlPerms)) return;
+            if (!info.IsProjectile()) return;
+            
+            //var weapon = info.Weapon.GetItem();  // ONLY WORKS FOR GUNS
+            Puts(info.WeaponPrefab.name);
 
+            string entName = info.WeaponPrefab.name;
+            if (entName != config.enderpearl) return;
 
-				}
-			}
+            Teleport(attacker, info);
+        }
 
-		}
-		#endregion
+        #endregion
 
-		#region Custom Methods
-		void Teleport(BasePlayer attacker, HitInfo info)
-		{
-			Vector3 EntLoc = info.HitPositionWorld;
-			attacker.transform.position = EntLoc;
-			info.ProjectilePrefab.conditionLoss += 1f;
-		}
+        #region Custom Methods
 
-		#endregion
+        void Teleport(BasePlayer attacker, HitInfo info)
+        {
+            Vector3 entLoc = info.HitPositionWorld;
+            attacker.transform.position = entLoc;
+            info.ProjectilePrefab.conditionLoss += 1f;
+        }
 
-		#region Config
+        #endregion
 
-		private class PluginConfig
-		{
-			[JsonProperty("Enderpearl")]
-			public string enderpearl { get; set; }
+        #region Config
 
+        private class PluginConfig
+        {
+            [JsonProperty("Enderpearl")] public string enderpearl { get; set; }
+        }
 
-		}
+        private PluginConfig GetDefaultConfig()
+        {
+            return new PluginConfig
+            {
+                enderpearl = "snowball.entity"
+            };
+        }
 
-		private PluginConfig GetDefaultConfig()
-		{
-			return new PluginConfig
-			{
-				enderpearl = "snowball"
-			};
-		}
+        protected override void LoadDefaultConfig()
+        {
+            Config.WriteObject(GetDefaultConfig(), true);
+        }
 
-		protected override void LoadDefaultConfig()
-		{
-			Config.WriteObject(GetDefaultConfig(), true);
-		}
-		#endregion
-	}
+        #endregion
+    }
 }
