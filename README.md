@@ -6,7 +6,7 @@
 
 The configuration is pretty simple and easy to figure out. 
 
-`Enderpear` -- the item you want to set as the ender pearl.
+`Enderpearl` -- the item you want to set as the ender pearl.
 
 **This is the weapons name and not the projectile E.G**  `ak47u.entity`
 
