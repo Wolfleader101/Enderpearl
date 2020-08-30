@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Oxide.Plugins
 {
-    [Info("Enderpearl", "Wolfleader101", "0.4.0")]
+    [Info("Enderpearl", "Wolfleader101", "0.4.1")]
     [Description("Throw an ender pearl and teleport to its location")]
     class Enderpearl : RustPlugin
     {
@@ -32,7 +32,7 @@ namespace Oxide.Plugins
             if (!info.IsProjectile()) return;
             
             //var weapon = info.Weapon.GetItem();  // ONLY WORKS FOR GUNS
-            Puts(info.WeaponPrefab.name);
+            //Puts(info.WeaponPrefab.name);
 
             string entName = info.WeaponPrefab.name;
             if (entName != config.enderpearl) return;
